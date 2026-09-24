@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6. Sınıf Din Kültürü - Peygamber ve İlahi Kitap İnancı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif']
+                    },
+                    colors: {
+                        emeraldGlow: '#00ff9d',
+                        cyanGlow: '#00e5ff',
+                        purpleGlow: '#a855f7',
+                        goldGlow: '#fbbf24',
+                        darkBg: '#090d16',
+                        cardBg: 'rgba(15, 23, 42, 0.75)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #080c14;
+            color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Glassmorphism containers */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-button {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-button:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(0, 229, 255, 0.3);
+            border-color: rgba(0, 229, 255, 0.5);
+        }
+
+        .glass-button:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+
+        /* Neon Glow Effects */
+        .glow-cyan { box-shadow: 0 0 25px rgba(0, 229, 255, 0.35); }
+        .glow-emerald { box-shadow: 0 0 25px rgba(0, 255, 157, 0.35); }
+        .glow-purple { box-shadow: 0 0 25px rgba(168, 85, 247, 0.35); }
+        .glow-gold { box-shadow: 0 0 25px rgba(251, 191, 36, 0.35); }
+
+        .text-glow-cyan { text-shadow: 0 0 12px rgba(0, 229, 255, 0.6); }
+        .text-glow-gold { text-shadow: 0 0 12px rgba(251, 191, 36, 0.6); }
+
+        /* Animated background canvas */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080c14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00e5ff;
+        }
+
+        /* Keyframe animations */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .pulse-animation {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .shake-animation {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Drag and Drop Card Styling */
+        .draggable-item {
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+        }
+        .draggable-item:active {
+            cursor: grabbing;
+        }
+        .drop-target.hovered {
+            border-color: #00e5ff;
+            background: rgba(0, 229, 255, 0.15);
+        }
+    </style>
+</head>
+<body class="relative flex flex-col justify-between min-h-screen text-slate-100 selection:bg-cyan-500 selection:text-black">
+
+    <!-- Background Particle Effect Canvas -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- App Container -->
+    <div class="relative z-10 flex flex-col min-h-screen max-w-6xl mx-auto w-full px-4 py-6">
+
+        <header class="flex justify-between items-center glass-panel rounded-2xl p-4 mb-6">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center text-slate-950 font-extrabold text-2xl shadow-lg shadow-cyan-500/20">
+                    ☪
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-emerald-300 to-purple-400">
+                        Din Kültürü Macerası
+                    </h1>
+                    <p class="text-xs text-slate-400 font-medium">6. Sınıf - 1. Ünite: Peygamber ve İlahi Kitap İnancı</p>
+                </div>
+            </div>
+
+            <!-- Global Controls & Sound Toggle -->
+            <div class="flex items-center gap-3">
+                <button id="soundToggleBtn" onclick="toggleAudio()" class="glass-button p-3 rounded-xl text-slate-300 hover:text-cyan-400 flex items-center gap-2 text-sm font-semibold">
+                    <span id="soundIcon">🔊</span>
+                    <span class="hidden sm:inline" id="soundLabel">Ses Açık</span>
+                </button>
+                <button onclick="showMainMenu()" class="glass-button px-4 py-3 rounded-xl text-slate-300 hover:text-emerald-400 text-sm font-semibold">
+                    🏠 Ana Menü
+                </button>
+            </div>
+        </header>
+
+        <div id="gameHud" class="hidden glass-panel rounded-2xl p-4 mb-6 flex-wrap justify-between items-center gap-4">
+            <!-- Mode Info -->
+            <div class="flex items-center gap-2">
+                <span id="hudModeBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                    Zamana Karşı
+                </span>
+                <span id="hudProgressText" class="text-xs text-slate-400 font-semibold">Soru 1/5</span>
+            </div>
+
+            <!-- Health Lives -->
+            <div id="hudLivesContainer" class="flex gap-1 text-xl">
+                <span>❤️</span><span>❤️</span><span>❤️</span>
+            </div>
+
+            <!-- Combo Multiplier -->
+            <div class="flex items-center gap-2">
+                <span class="text-xs text-slate-400">COMBO</span>
+                <span id="hudComboText" class="text-lg font-extrabold text-goldGlow text-glow-gold">x1</span>
+            </div>
+
+            <!-- Score -->
+            <div class="flex items-center gap-2">
+                <span class="text-xs text-slate-400">PUAN</span>
+                <span id="hudScoreText" class="text-2xl font-black text-cyanGlow text-glow-cyan">0</span>
+            </div>
+
+            <!-- Progress Timer Bar (Width manipulated dynamically) -->
+            <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden border border-slate-700 mt-1">
+                <div id="hudTimerBar" class="bg-gradient-to-r from-emerald-400 via-cyan-400 to-purple-500 h-2.5 rounded-full transition-all duration-300" style="width: 100%"></div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT VIEW CONTAINER -->
+        <main id="mainContainer" class="flex-1 flex flex-col justify-center">
+
+            <div id="menuScreen" class="glass-panel rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden">
+                <div class="absolute -top-24 -left-24 w-60 h-60 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -right-24 w-60 h-60 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="inline-block px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-bold tracking-wider uppercase mb-4">
+                    İnteraktif Öğrenme Arenası
+                </div>
+
+                <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400">
+                    Peygamber ve İlahi Kitap İnancı
+                </h2>
+                <p class="text-slate-400 max-w-2xl mx-auto mb-8 text-sm sm:text-base leading-relaxed">
+                    6. Sınıf Din Kültürü 1. Ünite konularını eğlenceli görevler, hızlı testler ve eşleştirme mücadeleleriyle öğren ve ustalığını kanıtla!
+                </p>
+
+                <!-- Mode Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-8">
+                    <!-- Challenge 1 -->
+                    <div onclick="startChallenge(1)" class="glass-button p-6 rounded-2xl text-left border border-cyan-500/20 hover:border-cyan-400/60 cursor-pointer group relative overflow-hidden">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                                ⚡
+                            </div>
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-cyan-400 font-bold">Mod 1</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1 group-hover:text-cyan-300 transition-colors">Zamana Karşı Hız Testi</h3>
+                        <p class="text-xs text-slate-400">Süre bitmeden soruları hızlıca yanıtla, seri yakalayarak puan katla!</p>
+                    </div>
+
+                    <!-- Challenge 2 -->
+                    <div onclick="startChallenge(2)" class="glass-button p-6 rounded-2xl text-left border border-emerald-500/20 hover:border-emerald-400/60 cursor-pointer group relative overflow-hidden">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                                📖
+                            </div>
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-emerald-400 font-bold">Mod 2</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors">İlahi Kitap & Suhuf Eşleştirme</h3>
+                        <p class="text-xs text-slate-400">Peygamberleri kendilerine gönderilen ilahi kitaplar ve suhuflar ile doğru eşleştir!</p>
+                    </div>
+
+                    <!-- Challenge 3 -->
+                    <div onclick="startChallenge(3)" class="glass-button p-6 rounded-2xl text-left border border-purple-500/20 hover:border-purple-400/60 cursor-pointer group relative overflow-hidden">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                                🛡️
+                            </div>
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-purple-400 font-bold">Mod 3</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1 group-hover:text-purple-300 transition-colors">Peygamber Sıfatları Ajanı</h3>
+                        <p class="text-xs text-slate-400">Sıdk, Emanet, İsmet, Fetanet ve Tebliğ kavramlarını doğru tanımlarıyla eşleştir.</p>
+                    </div>
+
+                    <!-- Challenge 4 -->
+                    <div onclick="startChallenge(4)" class="glass-button p-6 rounded-2xl text-left border border-goldGlow/20 hover:border-goldGlow/60 cursor-pointer group relative overflow-hidden">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                                👑
+                            </div>
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-amber-400 font-bold">Şampiyonluk</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1 group-hover:text-amber-300 transition-colors">Ünite Sonu Şampiyonası</h3>
+                        <p class="text-xs text-slate-400">Tüm ünite konularını kapsayan zorlu final sınavı. Bütün hayatlarını koru!</p>
+                    </div>
+                </div>
+
+                <!-- Learning Recap Drawer Button -->
+                <button onclick="toggleRecapModal(true)" class="glass-button px-6 py-3 rounded-xl text-slate-300 hover:text-white text-sm font-semibold flex items-center gap-2 mx-auto">
+                    💡 Ünite Konu Özetini İncele (Ders Notları)
+                </button>
+            </div>
+
+            <div id="quizScreen" class="hidden glass-panel rounded-3xl p-6 sm:p-8 relative">
+                <div class="mb-6">
+                    <span id="quizCategoryBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                        Kategori
+                    </span>
+                    <h2 id="quizQuestionText" class="text-xl sm:text-2xl font-extrabold text-white mt-3 leading-snug">
+                        Soru metni buraya gelecek...
+                    </h2>
+                </div>
+
+                <!-- Multiple Choice Grid -->
+                <div id="quizOptionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <!-- Options populated via JS -->
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="quizFeedbackBox" class="hidden p-4 rounded-xl bg-slate-800/90 border border-slate-700 text-sm leading-relaxed">
+                    <!-- Feedback text -->
+                </div>
+            </div>
+
+            <div id="matchingScreen" class="hidden glass-panel rounded-3xl p-6 sm:p-8">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-extrabold text-emerald-400 mb-1">İlahi Kitap & Suhuf Eşleştirme</h2>
+                    <p class="text-xs text-slate-400">Sol taraftaki peygamber butonuna bas, ardından doğru ilahi kitap veya suhufe tıklayarak eşleştir!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Column 1: Prophets -->
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2 text-center">Peygamberler</h3>
+                        <div id="matchingProphetsList" class="space-y-2">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Sacred Books / Suhufe -->
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2 text-center">Kitaplar / Suhuflar</h3>
+                        <div id="matchingBooksList" class="space-y-2">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="attributesScreen" class="hidden glass-panel rounded-3xl p-6 sm:p-8">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-extrabold text-purple-400 mb-1">Peygamber Sıfatları Ajanı</h2>
+                    <p class="text-xs text-slate-400">Aşağıda tanımı verilen peygamber sıfatını doğru kavramla eşleştir!</p>
+                </div>
+
+                <div class="bg-slate-900/80 p-6 rounded-2xl border border-purple-500/30 mb-8 text-center">
+                    <span class="text-xs font-bold text-purple-400 uppercase tracking-widest">Sıfat Tanımı</span>
+                    <p id="attributeDescText" class="text-lg sm:text-xl font-semibold text-white mt-2">
+                        "Peygamberlerin Allah'tan aldıkları vahiyleri insanlara eksiksiz ve aynen bildirmeleridir."
+                    </p>
+                </div>
+
+                <!-- Attributes Choice Buttons -->
+                <div id="attributeButtonsGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <div id="resultsScreen" class="hidden glass-panel rounded-3xl p-8 text-center max-w-2xl mx-auto w-full">
+                <div id="resultStars" class="text-4xl sm:text-5xl mb-3">⭐⭐⭐</div>
+                <h2 id="resultTitle" class="text-3xl font-extrabold text-white mb-2">Tebrikler Şampiyon!</h2>
+                <p id="resultSubtitle" class="text-slate-400 text-sm mb-6">Mücadeleyi başarıyla tamamladın.</p>
+
+                <!-- Score Board Details -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 text-left">
+                    <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                        <div class="text-xs text-slate-400">Toplam Puan</div>
+                        <div id="resFinalScore" class="text-2xl font-black text-cyanGlow">0</div>
+                    </div>
+                    <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                        <div class="text-xs text-slate-400">Doğru Sayısı</div>
+                        <div id="resCorrectCount" class="text-2xl font-black text-emerald-400">0</div>
+                    </div>
+                    <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 col-span-2 sm:col-span-1">
+                        <div class="text-xs text-slate-400">En Yüksek Combo</div>
+                        <div id="resMaxCombo" class="text-2xl font-black text-goldGlow">x1</div>
+                    </div>
+                </div>
+
+                <!-- Performance Feedback Badge -->
+                <div id="resBadgeBox" class="p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-sm font-semibold mb-6">
+                    Rozet Kazanıldı: 📜 İlahi Kitaplar Uzmanı
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="restartCurrentChallenge()" class="glass-button px-6 py-3 rounded-xl text-white font-bold text-sm bg-cyan-500/20 hover:bg-cyan-500/40 border-cyan-500/50">
+                        🔄 Tekrar Oyna
+                    </button>
+                    <button onclick="showMainMenu()" class="glass-button px-6 py-3 rounded-xl text-slate-300 font-bold text-sm">
+                        🏠 Ana Menüye Dön
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <div id="recapModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+            <div class="glass-panel max-w-3xl w-full max-h-[85vh] rounded-3xl p-6 sm:p-8 overflow-y-auto relative">
+                <button onclick="toggleRecapModal(false)" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold">
+                    ✕
+                </button>
+                <h2 class="text-2xl font-extrabold text-cyan-400 mb-4 flex items-center gap-2">
+                    📖 1. Ünite Konu Özeti & Ders Notları
+                </h2>
+
+                <div class="space-y-6 text-sm text-slate-300 leading-relaxed">
+                    <!-- Section 1 -->
+                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                        <h3 class="font-bold text-white text-base mb-2 text-cyan-300">1. Peygamberlerin Sıfatları (Özellikleri)</h3>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><strong class="text-white">Sıdk:</strong> Doğruluk. Peygamberlerin dürüst olması, asla yalan söylememesidir.</li>
+                            <li><strong class="text-white">Emanet:</strong> Güvenilirlik. Peygamberlerin her hususta güvenilir kimseler olmasıdır.</li>
+                            <li><strong class="text-white">İsmet:</strong> Günahsızlık. Peygamberlerin gizli veya açık günah işlemekten korunmuş olmasıdır.</li>
+                            <li><strong class="text-white">Fetanet:</strong> Üstün Zeka. Peygamberlerin akıllı, zeki ve kavrayışlı olmasıdır.</li>
+                            <li><strong class="text-white">Tebliğ:</strong> Bildirmek. Allah'tan aldıkları vahiyleri insanlara eksiksiz aktarmalarıdır.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 2 -->
+                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                        <h3 class="font-bold text-white text-base mb-2 text-emerald-300">2. Dört Büyük İlahi Kitap</h3>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><strong class="text-white">Tevrat:</strong> Hz. Musa (a.s.)'a gönderilmiştir.</li>
+                            <li><strong class="text-white">Zebur:</strong> Hz. Davud (a.s.)'a gönderilmiştir.</li>
+                            <li><strong class="text-white">İncil:</strong> Hz. İsa (a.s.)'a gönderilmiştir.</li>
+                            <li><strong class="text-white">Kur'an-ı Kerim:</strong> Hz. Muhammed (s.a.v.)'e gönderilmiştir (Son ilahi kitap).</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 3 -->
+                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                        <h3 class="font-bold text-white text-base mb-2 text-purple-300">3. Suhuflar (Küçük Sayfalar)</h3>
+                        <p class="mb-2">Bazı peygamberlere kitap yerine "Suhuf" adı verilen küçük dini risaleler/sayfalar verilmiştir (Toplam 100 Sayfa):</p>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><strong>Hz. Âdem (a.s.):</strong> 10 Suhuf</li>
+                            <li><strong>Hz. Şit (a.s.):</strong> 50 Suhuf</li>
+                            <li><strong>Hz. İdris (a.s.):</strong> 30 Suhuf</li>
+                            <li><strong>Hz. İbrahim (a.s.):</strong> 10 Suhuf</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-6 text-center">
+                    <button onclick="toggleRecapModal(false)" class="glass-button px-6 py-2.5 rounded-xl text-white font-bold text-sm bg-cyan-500/20 border-cyan-500/40">
+                        Anladım, Oyuna Başla
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-xs text-slate-500">
+            6. Sınıf Din Kültürü ve Ahlak Bilgisi Eğitim Platformu • VS Code Uyumlu Tek Dosya
+        </footer>
+    </div>
+
+    <script>
+        /* ==========================================================================
+           1. WEB AUDIO API SYNTHESIZER (No external audio file dependence)
+           ========================================================================== */
+        let audioCtx = null;
+        let isMuted = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function toggleAudio() {
+            isMuted = !isMuted;
+            document.getElementById('soundIcon').innerText = isMuted ? '🔇' : '🔊';
+            document.getElementById('soundLabel').innerText = isMuted ? 'Sessiz' : 'Ses Açık';
+        }
+
+        function playSound(type) {
+            if (isMuted) return;
+            initAudio();
+            if (!audioCtx) return;
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'click') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(200, now + 0.05);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } 
+            else if (type === 'correct') {
+                // Cheerful arpeggio (C5 -> E5 -> G5 -> C6)
+                const freqs = [523.25, 659.25, 783.99, 1046.50];
+                freqs.forEach((f, index) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(f, now + index * 0.06);
+                    gain.gain.setValueAtTime(0.2, now + index * 0.06);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.06 + 0.2);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + index * 0.06);
+                    osc.stop(now + index * 0.06 + 0.2);
+                });
+            } 
+            else if (type === 'wrong') {
+                // Low error buzz
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.linearRampToValueAtTime(100, now + 0.25);
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            }
+            else if (type === 'combo') {
+                // High pitch chime
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, now);
+                osc.frequency.exponentialRampToValueAtTime(1760, now + 0.15);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.15);
+            }
+            else if (type === 'victory') {
+                // Fanfare melody
+                const notes = [523.25, 659.25, 783.99, 1046.50, 880, 1046.50];
+                const durations = [0.1, 0.1, 0.1, 0.3, 0.1, 0.4];
+                let timeOffset = 0;
+                notes.forEach((f, idx) => {
+                    const dur = durations[idx];
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(f, now + timeOffset);
+                    gain.gain.setValueAtTime(0.2, now + timeOffset);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + timeOffset + dur);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + timeOffset);
+                    osc.stop(now + timeOffset + dur);
+                    timeOffset += dur + 0.03;
+                });
+            }
+        }
+
+        /* ==========================================================================
+           2. QUESTION BANK & CURRICULUM DATA (Grade 6 Unit 1)
+           ========================================================================== */
+        const speedQuizQuestions = [
+            {
+                q: "Peygamberlerin Allah'tan aldıkları emir ve yasakları insanlara eksiksiz aktarmasına ne denir?",
+                options: ["Sıdk", "Emanet", "Tebliğ", "Fetanet"],
+                correct: 2,
+                exp: "Tebliğ; peygamberlerin Allah'tan aldıkları vahiyleri değiştirmeden insanlara bildirmesidir."
+            },
+            {
+                q: "Aşağıdaki ilahi kitaplardan hangisi Hz. Musa (a.s.)'a indirilmiştir?",
+                options: ["İncil", "Tevrat", "Zebur", "Kur'an-ı Kerim"],
+                correct: 1,
+                exp: "Tevrat, İsrailoğullarına yön gösterici olarak Hz. Musa'ya indirilmiştir."
+            },
+            {
+                q: "Peygamberlerin son derece akıllı ve zeki olmalarını ifade eden sıfat hangisidir?",
+                options: ["Fetanet", "İsmet", "Sıdk", "Emanet"],
+                correct: 0,
+                exp: "Fetanet; peygamberlerin yüksek bir zekaya ve üstün kavrayış yeteneğine sahip olmasıdır."
+            },
+            {
+                q: "Kendisine 10 Suhuf (küçük sayfa) verilen ilk insan ve ilk peygamber kimdir?",
+                options: ["Hz. Şit", "Hz. İdris", "Hz. Âdem", "Hz. İbrahim"],
+                correct: 2,
+                exp: "İlk insan ve ilk peygamber olan Hz. Âdem (a.s.)'a 10 suhuf verilmiştir."
+            },
+            {
+                q: "Hz. Davud (a.s.)'a indirilen ilahi kitap aşağıdakilerden hangisidir?",
+                options: ["Zebur", "Tevrat", "İncil", "Kur'an-ı Kerim"],
+                correct: 0,
+                exp: "Zebur, Hz. Davud (a.s.)'a vahyedilmiş ilahi kitaptır."
+            }
+        ];
+
+        const bossQuestions = [
+            ...speedQuizQuestions,
+            {
+                q: "Peygamberlerin gizli veya açık her türlü günahtan korunmuş (günahsız) olmaları hangi sıfattır?",
+                options: ["Sıdk", "İsmet", "Emanet", "Tebliğ"],
+                correct: 1,
+                exp: "İsmet; peygamberlerin günah işlemekten korunmuşluk sıfatıdır."
+            },
+            {
+                q: "Toplam 100 sayfadan oluşan suhuflardan en fazla sayfa (50 Suhuf) hangi peygambere verilmiştir?",
+                options: ["Hz. Âdem", "Hz. İbrahim", "Hz. Şit", "Hz. İdris"],
+                correct: 2,
+                exp: "Hz. Şit (a.s.)'a 50 suhuf verilmiştir."
+            },
+            {
+                q: "Aşağıdakilerden hangisi peygamberlerin ortak niteliklerinden (sıfatlarından) biri DEĞİLDİR?",
+                options: ["Dürüst olmak (Sıdk)", "Geleceği kesin bilmek", "Güvenilir olmak (Emanet)", "Zeki olmak (Fetanet)"],
+                correct: 1,
+                exp: "Geleceği sadece Allah bilir; peygamberler Allah'ın bildirdiği kadarıyla gaybı bilebilirler."
+            }
+        ];
+
+        const matchingPairsData = [
+            { id: 1, prophet: "Hz. Musa (a.s.)", match: "Tevrat" },
+            { id: 2, prophet: "Hz. Davud (a.s.)", match: "Zebur" },
+            { id: 3, prophet: "Hz. İsa (a.s.)", match: "İncil" },
+            { id: 4, prophet: "Hz. Muhammed (s.a.v.)", match: "Kur'an-ı Kerim" },
+            { id: 5, prophet: "Hz. Şit (a.s.)", match: "50 Suhuf" },
+            { id: 6, prophet: "Hz. İdris (a.s.)", match: "30 Suhuf" }
+        ];
+
+        const attributesData = [
+            { name: "Sıdk", desc: "Peygamberlerin hayatlarının her anında dürüst olmaları ve asla yalan söylememeleridir." },
+            { name: "Emanet", desc: "Peygamberlerin son derece güvenilir kimseler olması ve kendilerine her konuda emin olunmasıdır." },
+            { name: "İsmet", desc: "Peygamberlerin kasten veya sehven günah işlemekten uzak durmaları, günahsız olmalarıdır." },
+            { name: "Fetanet", desc: "Peygamberlerin derin bir zekaya, keskin bir akla ve yüksek kavrama gücüne sahip olmasıdır." },
+            { name: "Tebliğ", desc: "Allah'ın kendilerine vahyettiği ilahi mesajları insanlara eksiksiz şekilde duyurmalarıdır." }
+        ];
+
+        /* ==========================================================================
+           3. GAME STATE MANAGEMENT
+           ========================================================================== */
+        let currentMode = 1; // 1: Speed, 2: Matching, 3: Attributes, 4: Boss
+        let currentQuestionIdx = 0;
+        let score = 0;
+        let combo = 1;
+        let maxCombo = 1;
+        let correctAnswersCount = 0;
+        let lives = 3;
+        let timerInterval = null;
+        let timeLeft = 15;
+        let maxTime = 15;
+
+        // Matching mode internal state
+        let selectedProphetObj = null;
+        let completedMatches = 0;
+
+        // Attribute mode internal state
+        let currentAttributeIdx = 0;
+
+        /* ==========================================================================
+           4. CORE NAVIGATION & SCREEN SWITCHING
+           ========================================================================== */
+        function hideAllScreens() {
+            document.getElementById('menuScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('matchingScreen').classList.add('hidden');
+            document.getElementById('attributesScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('gameHud').classList.add('hidden');
+            if (timerInterval) clearInterval(timerInterval);
+        }
+
+        function showMainMenu() {
+            playSound('click');
+            hideAllScreens();
+            document.getElementById('menuScreen').classList.remove('hidden');
+        }
+
+        function toggleRecapModal(show) {
+            playSound('click');
+            const modal = document.getElementById('recapModal');
+            if (show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
+        }
+
+        function startChallenge(modeNum) {
+            playSound('click');
+            hideAllScreens();
+            currentMode = modeNum;
+            score = 0;
+            combo = 1;
+            maxCombo = 1;
+            correctAnswersCount = 0;
+            lives = modeNum === 4 ? 3 : 99; // Challenge 4 has strict 3 lives
+
+            document.getElementById('gameHud').classList.remove('hidden');
+            updateHud();
+
+            if (modeNum === 1) {
+                // Speed Quiz
+                document.getElementById('hudModeBadge').innerText = "⚡ Zamana Karşı";
+                currentQuestionIdx = 0;
+                loadQuizQuestion(speedQuizQuestions);
+            } 
+            else if (modeNum === 2) {
+                // Matching
+                document.getElementById('hudModeBadge').innerText = "📖 Eşleştirme Görevi";
+                initMatchingGame();
+            } 
+            else if (modeNum === 3) {
+                // Attributes
+                document.getElementById('hudModeBadge').innerText = "🛡️ Sıfat Ajanı";
+                currentAttributeIdx = 0;
+                initAttributeGame();
+            } 
+            else if (modeNum === 4) {
+                // Boss Championship
+                document.getElementById('hudModeBadge').innerText = "👑 Ünite Şampiyonası";
+                currentQuestionIdx = 0;
+                loadQuizQuestion(bossQuestions);
+            }
+        }
+
+        function restartCurrentChallenge() {
+            startChallenge(currentMode);
+        }
+
+        function updateHud() {
+            document.getElementById('hudScoreText').innerText = score;
+            document.getElementById('hudComboText').innerText = `x${combo}`;
+            
+            // Render Hearts
+            const heartsContainer = document.getElementById('hudLivesContainer');
+            if (lives > 10) {
+                heartsContainer.innerHTML = `<span class="text-xs text-slate-400 font-bold">SONSUZ CAN</span>`;
+            } else {
+                let heartsHtml = '';
+                for (let i = 0; i < 3; i++) {
+                    heartsHtml += i < lives ? '❤️' : '🖤';
+                }
+                heartsContainer.innerHTML = heartsHtml;
+            }
+        }
+
+        function startTimer(seconds, onExpire) {
+            if (timerInterval) clearInterval(timerInterval);
+            timeLeft = seconds;
+            maxTime = seconds;
+            
+            const timerBar = document.getElementById('hudTimerBar');
+            timerBar.style.width = '100%';
+
+            timerInterval = setInterval(() => {
+                timeLeft -= 0.1;
+                const percentage = Math.max(0, (timeLeft / maxTime) * 100);
+                timerBar.style.width = `${percentage}%`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    onExpire();
+                }
+            }, 100);
+        }
+
+        /* ==========================================================================
+           5. MODE 1 & 4: QUIZ MECHANICS (Multiple Choice)
+           ========================================================================== */
+        function loadQuizQuestion(questionsArray) {
+            document.getElementById('quizScreen').classList.remove('hidden');
+            document.getElementById('quizFeedbackBox').classList.add('hidden');
+
+            const qData = questionsArray[currentQuestionIdx];
+            document.getElementById('hudProgressText').innerText = `Soru ${currentQuestionIdx + 1}/${questionsArray.length}`;
+            document.getElementById('quizCategoryBadge').innerText = `6. Sınıf Din Kültürü • Soru ${currentQuestionIdx + 1}`;
+            document.getElementById('quizQuestionText').innerText = qData.q;
+
+            const grid = document.getElementById('quizOptionsGrid');
+            grid.innerHTML = '';
+
+            qData.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'glass-button p-4 rounded-2xl text-left font-semibold text-slate-200 border border-slate-700 hover:border-cyan-400/50 flex items-center gap-3 transition-all';
+                btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-xl bg-slate-800 text-cyan-400 flex items-center justify-center font-bold text-sm border border-slate-700">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <span>${optText}</span>
+                `;
+                btn.onclick = () => handleQuizAnswer(idx, qData, questionsArray, btn);
+                grid.appendChild(btn);
+            });
+
+            // Start 15-second countdown for speed quiz
+            startTimer(15, () => {
+                playSound('wrong');
+                handleQuizTimeout(qData, questionsArray);
+            });
+        }
+
+        function handleQuizAnswer(selectedIdx, qData, questionsArray, clickedBtn) {
+            if (timerInterval) clearInterval(timerInterval);
+
+            const allButtons = document.querySelectorAll('#quizOptionsGrid button');
+            allButtons.forEach(b => b.disabled = true);
+
+            const feedbackBox = document.getElementById('quizFeedbackBox');
+            feedbackBox.classList.remove('hidden');
+
+            if (selectedIdx === qData.correct) {
+                // Correct Answer
+                playSound('correct');
+                clickedBtn.classList.add('bg-emerald-500/20', 'border-emerald-500', 'text-emerald-300');
+                
+                correctAnswersCount++;
+                score += 100 * combo;
+                combo++;
+                if (combo > maxCombo) maxCombo = combo;
+
+                if (combo > 2) playSound('combo');
+
+                feedbackBox.className = "p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm leading-relaxed";
+                feedbackBox.innerHTML = `<strong>✨ Doğru Cevap!</strong> ${qData.exp}`;
+            } else {
+                // Wrong Answer
+                playSound('wrong');
+                clickedBtn.classList.add('bg-rose-500/20', 'border-rose-500', 'text-rose-300');
+                allButtons[qData.correct].classList.add('bg-emerald-500/20', 'border-emerald-500', 'text-emerald-300');
+
+                combo = 1;
+                if (currentMode === 4) lives--;
+
+                feedbackBox.className = "p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm leading-relaxed";
+                feedbackBox.innerHTML = `<strong>❌ Yanlış Cevap.</strong> ${qData.exp}`;
+            }
+
+            updateHud();
+
+            setTimeout(() => {
+                if (lives <= 0) {
+                    finishGame(false);
+                } else {
+                    currentQuestionIdx++;
+                    if (currentQuestionIdx < questionsArray.length) {
+                        loadQuizQuestion(questionsArray);
+                    } else {
+                        finishGame(true);
+                    }
+                }
+            }, 2200);
+        }
+
+        function handleQuizTimeout(qData, questionsArray) {
+            combo = 1;
+            if (currentMode === 4) lives--;
+            updateHud();
+
+            const feedbackBox = document.getElementById('quizFeedbackBox');
+            feedbackBox.classList.remove('hidden');
+            feedbackBox.className = "p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm leading-relaxed";
+            feedbackBox.innerHTML = `<strong>⏰ Süre Doldu!</strong> ${qData.exp}`;
+
+            setTimeout(() => {
+                if (lives <= 0) {
+                    finishGame(false);
+                } else {
+                    currentQuestionIdx++;
+                    if (currentQuestionIdx < questionsArray.length) {
+                        loadQuizQuestion(questionsArray);
+                    } else {
+                        finishGame(true);
+                    }
+                }
+            }, 2200);
+        }
+
+        /* ==========================================================================
+           6. MODE 2: MATCHING CHALLENGE MECHANICS
+           ========================================================================== */
+        function initMatchingGame() {
+            document.getElementById('matchingScreen').classList.remove('hidden');
+            selectedProphetObj = null;
+            completedMatches = 0;
+
+            const prophetsList = document.getElementById('matchingProphetsList');
+            const booksList = document.getElementById('matchingBooksList');
+            prophetsList.innerHTML = '';
+            booksList.innerHTML = '';
+
+            document.getElementById('hudProgressText').innerText = `Eşleşme 0/${matchingPairsData.length}`;
+
+            // Shuffle pairs for books
+            const shuffledBooks = [...matchingPairsData].sort(() => Math.random() - 0.5);
+
+            matchingPairsData.forEach(pair => {
+                const pBtn = document.createElement('button');
+                pBtn.className = 'w-full glass-button p-4 rounded-xl text-left font-bold text-slate-200 border border-slate-700 flex justify-between items-center transition-all';
+                pBtn.id = `prophet-btn-${pair.id}`;
+                pBtn.innerHTML = `<span>👤 ${pair.prophet}</span> <span class="text-xs text-slate-400">Seç</span>`;
+                pBtn.onclick = () => selectProphetForMatching(pair, pBtn);
+                prophetsList.appendChild(pBtn);
+            });
+
+            shuffledBooks.forEach(pair => {
+                const bBtn = document.createElement('button');
+                bBtn.className = 'w-full glass-button p-4 rounded-xl text-left font-bold text-cyan-300 border border-slate-700 flex justify-between items-center transition-all';
+                bBtn.id = `book-btn-${pair.id}`;
+                bBtn.innerHTML = `<span>📜 ${pair.match}</span> <span class="text-xs text-slate-400">Eşleştir</span>`;
+                bBtn.onclick = () => selectBookForMatching(pair, bBtn);
+                booksList.appendChild(bBtn);
+            });
+
+            startTimer(40, () => {
+                playSound('wrong');
+                finishGame(false);
+            });
+        }
+
+        function selectProphetForMatching(pairObj, btnElement) {
+            playSound('click');
+            document.querySelectorAll('#matchingProphetsList button').forEach(b => {
+                if (!b.disabled) b.classList.remove('border-cyan-400', 'bg-cyan-500/20');
+            });
+
+            selectedProphetObj = pairObj;
+            btnElement.classList.add('border-cyan-400', 'bg-cyan-500/20');
+        }
+
+        function selectBookForMatching(bookPairObj, btnElement) {
+            if (!selectedProphetObj) {
+                playSound('wrong');
+                return;
+            }
+
+            if (selectedProphetObj.id === bookPairObj.id) {
+                // Correct Match
+                playSound('correct');
+                score += 150 * combo;
+                combo++;
+                if (combo > maxCombo) maxCombo = combo;
+                completedMatches++;
+                correctAnswersCount++;
+
+                const pBtn = document.getElementById(`prophet-btn-${selectedProphetObj.id}`);
+                pBtn.className = 'w-full p-4 rounded-xl text-left font-bold bg-emerald-500/20 border border-emerald-500 text-emerald-300 flex justify-between items-center opacity-70';
+                pBtn.innerHTML = `<span>✓ ${selectedProphetObj.prophet}</span> <span class="text-xs">Tamamlandı</span>`;
+                pBtn.disabled = true;
+
+                btnElement.className = 'w-full p-4 rounded-xl text-left font-bold bg-emerald-500/20 border border-emerald-500 text-emerald-300 flex justify-between items-center opacity-70';
+                btnElement.innerHTML = `<span>✓ ${bookPairObj.match}</span> <span class="text-xs">Tamamlandı</span>`;
+                btnElement.disabled = true;
+
+                selectedProphetObj = null;
+                updateHud();
+
+                document.getElementById('hudProgressText').innerText = `Eşleşme ${completedMatches}/${matchingPairsData.length}`;
+
+                if (completedMatches === matchingPairsData.length) {
+                    if (timerInterval) clearInterval(timerInterval);
+                    setTimeout(() => finishGame(true), 800);
+                }
+            } else {
+                // Wrong Match
+                playSound('wrong');
+                combo = 1;
+                updateHud();
+
+                btnElement.classList.add('shake-animation', 'border-rose-500');
+                setTimeout(() => btnElement.classList.remove('shake-animation', 'border-rose-500'), 500);
+            }
+        }
+
+        /* ==========================================================================
+           7. MODE 3: ATTRIBUTES AGENT MECHANICS
+           ========================================================================== */
+        function initAttributeGame() {
+            document.getElementById('attributesScreen').classList.remove('hidden');
+            loadAttributeTask();
+
+            startTimer(30, () => {
+                playSound('wrong');
+                finishGame(false);
+            });
+        }
+
+        function loadAttributeTask() {
+            const currentAttr = attributesData[currentAttributeIdx];
+            document.getElementById('hudProgressText').innerText = `Kavram ${currentAttributeIdx + 1}/${attributesData.length}`;
+            document.getElementById('attributeDescText').innerText = `"${currentAttr.desc}"`;
+
+            const grid = document.getElementById('attributeButtonsGrid');
+            grid.innerHTML = '';
+
+            // Shuffle choice options
+            const shuffledChoices = [...attributesData].sort(() => Math.random() - 0.5);
+
+            shuffledChoices.forEach(attrObj => {
+                const btn = document.createElement('button');
+                btn.className = 'glass-button p-5 rounded-2xl font-extrabold text-lg text-slate-100 border border-slate-700 hover:border-purple-400 flex flex-col items-center justify-center gap-1 transition-all';
+                btn.innerHTML = `
+                    <span class="text-purple-400">🛡️</span>
+                    <span>${attrObj.name}</span>
+                `;
+                btn.onclick = () => handleAttributeSelection(attrObj, currentAttr, btn);
+                grid.appendChild(btn);
+            });
+        }
+
+        function handleAttributeSelection(selectedObj, correctObj, btnElement) {
+            if (selectedObj.name === correctObj.name) {
+                // Correct
+                playSound('correct');
+                score += 120 * combo;
+                combo++;
+                if (combo > maxCombo) maxCombo = combo;
+                correctAnswersCount++;
+                updateHud();
+
+                btnElement.classList.add('bg-emerald-500/30', 'border-emerald-400');
+
+                currentAttributeIdx++;
+                setTimeout(() => {
+                    if (currentAttributeIdx < attributesData.length) {
+                        loadAttributeTask();
+                    } else {
+                        if (timerInterval) clearInterval(timerInterval);
+                        finishGame(true);
+                    }
+                }, 800);
+            } else {
+                // Wrong
+                playSound('wrong');
+                combo = 1;
+                updateHud();
+
+                btnElement.classList.add('shake-animation', 'border-rose-500', 'bg-rose-500/20');
+                setTimeout(() => btnElement.classList.remove('shake-animation', 'border-rose-500', 'bg-rose-500/20'), 500);
+            }
+        }
+
+        /* ==========================================================================
+           8. END GAME & RESULTS SCREEN
+           ========================================================================== */
+        function finishGame(isVictory) {
+            if (timerInterval) clearInterval(timerInterval);
+            hideAllScreens();
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            document.getElementById('resFinalScore').innerText = score;
+            document.getElementById('resCorrectCount').innerText = correctAnswersCount;
+            document.getElementById('resMaxCombo').innerText = `x${maxCombo}`;
+
+            const starsElem = document.getElementById('resultStars');
+            const titleElem = document.getElementById('resultTitle');
+            const badgeBox = document.getElementById('resBadgeBox');
+
+            if (isVictory && score >= 300) {
+                playSound('victory');
+                starsElem.innerText = "⭐⭐⭐";
+                titleElem.innerText = "Mükemmel Başarı!";
+                badgeBox.className = "p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm font-semibold mb-6";
+                badgeBox.innerText = "🏆 Ünite Şampiyonu Rozeti ve Altın Madalya Kazanıldı!";
+            } else if (isVictory) {
+                playSound('victory');
+                starsElem.innerText = "⭐⭐☆";
+                titleElem.innerText = "Tebrikler!";
+                badgeBox.className = "p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-sm font-semibold mb-6";
+                badgeBox.innerText = "📜 Peygamberler Tarihi Çırağı Rozeti Kazanıldı!";
+            } else {
+                playSound('wrong');
+                starsElem.innerText = "⭐☆☆";
+                titleElem.innerText = "Gayret Etmelisin!";
+                badgeBox.className = "p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm font-semibold mb-6";
+                badgeBox.innerText = "💡 Ünite özetini tekrar inceleyip yeniden dene!";
+            }
+        }
+
+        /* ==========================================================================
+           9. CANVAS BACKGROUND PARTICLE ANIMATION
+           ========================================================================== */
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = (Math.random() - 0.5) * 0.4;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(0, 229, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 60; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.onload = function() {
+            initParticles();
+            animateParticles();
+        };
+    </script>
+</body>
+</html>
